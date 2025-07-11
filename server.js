@@ -14,7 +14,6 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://foundup.vercel.app',
   'https://frontend-foudup.vercel.app'
 ];
 
@@ -27,6 +26,7 @@ app.use(cors({
     }
   },
   credentials: true,
+  exposedHeaders: ['set-cookie'],
 }));
 
 
