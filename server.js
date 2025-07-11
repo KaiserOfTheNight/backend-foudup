@@ -14,7 +14,8 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://frontend-foudup.vercel.app'
+  'https://frontend-foudup.vercel.app',
+  'https://foundup.vercel.app' // Add your backend URL if different
 ];
 
 app.use(cors({
