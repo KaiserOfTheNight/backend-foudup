@@ -11,36 +11,46 @@ dotenv.config();
 
 const app = express();
 
-// CORS setup: allow Netlify, local dev, etc.
+// CORS setup
 app.use(cors({
-  origin: (origin, callback) => {
-    const allowedOrigins = [
-      'https://frontend-foudup.vercel.app',
-      'http://localhost:5173'
-    ];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true,
   credentials: true
 }));
 
 app.use(express.json());
 app.use(cookieParser());
 
+// Test route
 app.get('/', (req, res) => {
-  res.json('Hello, World!');
+  res.json({ status: 'API is working' });
 });
 
 // Routes
 app.use('/api/auth', AuthRoutes);
-app.use('/api/projects', ProjectRoutes); 
+app.use('/api/projects', ProjectRoutes);
 app.use('/api/user', UserRoutes);
 
-// Start server
-app.listen(5000, () => {
-  console.log('✅ Server running on http://localhost:5000');
-  connectDB();
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Server error', error: err.message });
 });
+
+// Database connection and server start
+const startServer = async () => {
+  try {
+    await connectDB();
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
+
+// Export for Vercel
+export default app;
