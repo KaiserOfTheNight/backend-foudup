@@ -12,10 +12,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: ['https://foundup.netlify.app'],
-  credentials: true
-}));
+
 
 app.use(express.json());
 app.use(cookieParser());
