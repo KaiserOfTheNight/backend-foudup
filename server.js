@@ -13,8 +13,9 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['https://foundup.netlify.app'],
-  credentials: true
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.json());
