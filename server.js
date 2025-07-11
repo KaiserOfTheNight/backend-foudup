@@ -26,7 +26,6 @@ app.use(cors({
     }
   },
   credentials: true,
-  exposedHeaders: ['set-cookie'],
 }));
 
 

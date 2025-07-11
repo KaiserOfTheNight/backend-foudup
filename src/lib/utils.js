@@ -7,9 +7,8 @@ export const generateToken = (userId, res) => {
     res.cookie("jwt", token, {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: 'none', // Changed from 'lax' to 'none'
-        secure: true, // Always true in production
-        domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined
+        sameSite: "lax",
+        secure: process.env.NODE_ENV !== "development"
     });
     return token;
 };
