@@ -19,14 +19,14 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
+  origin: [
+    'http://localhost:5173',
+    'https://frontend-foudup.vercel.app',
+    'https://foundup.vercel.app' // Include backend URL if needed
+  ],
+  credentials: true, // Allow cookies in cross-origin requests
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 
