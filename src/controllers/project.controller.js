@@ -1,9 +1,8 @@
 import Project from "../models/project.model.js";
-import mongoose from 'mongoose';
+
 
 export const createProject = async (req, res) => {
   try {
-    console.log("Creating project with data:", req.body);
     const { title, description, category, teamSize, status } = req.body;
     const createdBy = req.user._id;
 
@@ -34,37 +33,28 @@ export const createProject = async (req, res) => {
     res.status(201).json(populatedProject);
   } catch (error) {
     console.log("Error in createProject controller: ", error.message);
-    console.log("Full error:", error);
-    res.status(500).json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 export const getProjects = async (req, res) => {
   try {
-    console.log("Getting projects...");
-    console.log("MongoDB connection state:", mongoose.connection.readyState);
-    
     const projects = await Project.find({})
       .populate('createdBy', 'username email')
       .populate('members.user', 'username email')
       .lean(); // Convert to plain JavaScript object
 
-    console.log("Projects found:", projects.length);
-    
     // Ensure we always return an array, even if empty
     res.status(200).json(Array.isArray(projects) ? projects : []);
   } catch (error) {
     console.log("Error in getProjects controller: ", error.message);
-    console.log("Full error:", error);
-    res.status(500).json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 export const getProject = async (req, res) => {
   try {
     const projectId = req.params.id;
-    console.log("Getting project with ID:", projectId);
-    
     const project = await Project.findById(projectId)
       .populate('createdBy', 'username email')
       .populate('members.user', 'username email');
@@ -76,8 +66,7 @@ export const getProject = async (req, res) => {
     res.status(200).json(project);
   } catch (error) {
     console.log("Error in getProject controller: ", error.message);
-    console.log("Full error:", error);
-    res.status(500).json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -109,8 +98,7 @@ export const updateProject = async (req, res) => {
     res.status(200).json(project);
   } catch (error) {
     console.log("Error in updateProject controller: ", error.message);
-    console.log("Full error:", error);
-    res.status(500).json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -133,7 +121,6 @@ export const deleteProject = async (req, res) => {
     res.status(200).json({ message: "Project deleted successfully" });
   } catch (error) {
     console.log("Error in deleteProject controller: ", error.message);
-    console.log("Full error:", error);
-    res.status(500).json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };

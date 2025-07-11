@@ -11,17 +11,14 @@ dotenv.config();
 
 const app = express();
 
-// CORS setup: allow Netlify, local dev, etc.
+// Middleware
 app.use(cors({
-  origin: true,
+  origin: ['https://foundup.netlify.app'],
   credentials: true
 }));
 
 app.use(express.json());
 app.use(cookieParser());
-
-// Connect to database
-connectDB();
 
 app.get('/', (req, res) => {
   res.json('Hello, World!');
@@ -29,16 +26,11 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/auth', AuthRoutes);
-app.use('/api/projects', ProjectRoutes);
+app.use('/api/projects', ProjectRoutes); 
 app.use('/api/user', UserRoutes);
 
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`✅ Server running on http://localhost:${PORT}`);
-  });
-}
-
-// Export for Vercel
-export default app;
+// Start server
+app.listen(5000, () => {
+  console.log('✅ Server running on http://localhost:5000');
+  connectDB();
+});

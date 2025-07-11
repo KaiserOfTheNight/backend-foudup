@@ -11,7 +11,7 @@ import { protectedRoute } from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
 router.post('/', protectedRoute, createProject);
-router.get('/', getProjects);
+router.get('/', protectedRoute, getProjects);
 router.get('/:id', protectedRoute, getProject);
 router.put('/:id', protectedRoute, updateProject);
 router.delete('/:id', protectedRoute, deleteProject);
