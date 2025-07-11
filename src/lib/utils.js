@@ -8,9 +8,8 @@ export const generateToken = (userId, res) => {
     res.cookie("jwt", token, {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: "none", 
         secure: true,
-        domain: process.env.NODE_ENV === "production" ? "frontend-foudup.vercel.app" : "localhost"
+        sameSite: "none", 
     });
     return token;
 };
