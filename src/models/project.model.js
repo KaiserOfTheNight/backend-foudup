@@ -15,6 +15,7 @@ const memberSchema = new mongoose.Schema({
 }, { _id: false });
 
 const projectSchema = new mongoose.Schema({
+  image : String,
   title: { 
     type: String, 
     required: true 

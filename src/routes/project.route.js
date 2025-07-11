@@ -7,10 +7,11 @@ import {
   deleteProject 
 } from '../controllers/project.controller.js';
 import { protectedRoute } from '../middlewares/auth.middleware.js';
+import upload from '../middlewares/upload.middleware.js';
 
 const router = express.Router();
 
-router.post('/', protectedRoute, createProject);
+router.post('/', protectedRoute, upload.single('image'), createProject);
 router.get('/', getProjects);
 router.get('/:id', protectedRoute, getProject);
 router.put('/:id', protectedRoute, updateProject);

@@ -1,5 +1,5 @@
 import Project from "../models/project.model.js";
-
+import cloudinary from "../lib/cloudinary.js";
 
 export const createProject = async (req, res) => {
   try {
@@ -10,27 +10,48 @@ export const createProject = async (req, res) => {
       return res.status(400).json({ message: "Title is required" });
     }
 
-    const project = new Project({
-      title,
-      description,
-      category,
-      teamSize,
-      status: status || 'planning',
-      createdBy,
-      members: [{
-        user: createdBy,
-        roles: ['admin']
-      }]
-    });
+    if (!req.file) {
+      return res.status(400).json({ message: "Image file is required" });
+    }
 
-    await project.save();
-    
-    // Populate the createdBy and members.user fields before returning
-    const populatedProject = await Project.findById(project._id)
-      .populate('createdBy', 'username email')
-      .populate('members.user', 'username email');
+    const result = await cloudinary.uploader.upload_stream(
+      {
+        folder: "projects",
+        resource_type: "image",
+      },
+      async (error, result) => {
+        if (error) {
+          console.error("Cloudinary upload error:", error);
+          return res.status(500).json({ message: "Image upload failed" });
+        }
 
-    res.status(201).json(populatedProject);
+        const project = new Project({
+          title,
+          description,
+          category,
+          teamSize,
+          status: status || 'planning',
+          createdBy,
+          image: result.secure_url,
+          members: [{
+            user: createdBy,
+            roles: ['admin']
+          }]
+        });
+
+        await project.save();
+        
+        // Populate the createdBy and members.user fields before returning
+        const populatedProject = await Project.findById(project._id)
+          .populate('createdBy', 'username email')
+          .populate('members.user', 'username email');
+
+        res.status(201).json(populatedProject);
+      }
+    );
+
+    result.end(req.file.buffer);
+
   } catch (error) {
     console.log("Error in createProject controller: ", error.message);
     res.status(500).json({ message: "Internal server error" });

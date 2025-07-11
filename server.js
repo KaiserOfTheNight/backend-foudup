@@ -6,6 +6,8 @@ import { connectDB } from './src/lib/db.js';
 import AuthRoutes from './src/routes/auth.route.js';
 import ProjectRoutes from './src/routes/project.route.js';
 import UserRoutes from './src/routes/user.route.js';
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -42,6 +44,9 @@ app.get('/', (req, res) => {
 app.use('/api/auth', AuthRoutes);
 app.use('/api/projects', ProjectRoutes); 
 app.use('/api/user', UserRoutes);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 connectDB();
 
