@@ -16,15 +16,15 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://frontend-foudup.vercel.app',
-  'https://foundup.vercel.app' // Add your backend URL if different
+  'https://foundup.vercel.app',
+  'https://foundup-api.vercel.app' // Add your backend URL if different
 ];
 
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://frontend-foudup.vercel.app',
-    'https://foundup.vercel.app' // Include backend URL if needed
+    'https://foundup.vercel.app',
+    'https://foundup-api.vercel.app' // Include backend URL if needed
   ],
   credentials: true, // Allow cookies in cross-origin requests
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
